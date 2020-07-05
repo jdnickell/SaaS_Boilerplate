@@ -37,7 +37,7 @@ namespace Service.ValidationServices
                 if (userActivationCodes.Count == 0)
                     return ValidateRegistrationResultType.InvalidActivationCode;
 
-                if (userActivationCodes.Count == MAXIMUM_ACTIVATION_CODE_USES)
+                if (userActivationCodes.Where(x => x.ApplicationUser != null)?.Count() > MAXIMUM_ACTIVATION_CODE_USES)
                     return ValidateRegistrationResultType.MaximumActivationCodeUsesExceeded;
 
                 var applicationUser = new ApplicationUser

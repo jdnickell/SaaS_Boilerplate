@@ -1,40 +1,64 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Service.ValidationServices;
 
 namespace Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
+        public IHostEnvironment HostEnvironment { get; }
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment)
         {
-            services.AddControllers();
+            Configuration = configuration;
+            HostEnvironment = hostEnvironment;
+
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(hostEnvironment.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{hostEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
+            builder.AddEnvironmentVariables();
+            this.Configuration = builder.Build();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionString")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<DataContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddScoped<IValidateRegistrationCommand, ValidateRegistrationCommand>();
+
+            services.AddControllers().AddControllersAsServices();
+            services.AddCors();
+            services.AddMvc();
+        }
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //TODO:  Add your domain and conditionally add localhost
+            app.UseCors(builder =>
+            {
+                builder
+                .AllowAnyOrigin() //"https://example.org",
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+            });
 
             app.UseHttpsRedirection();
 

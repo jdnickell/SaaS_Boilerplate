@@ -27,7 +27,7 @@ namespace Api.Controllers
             if (registrationValidationResult == ValidateRegistrationResultType.UnknownError)
                 return Problem(title: "An error occurred while processing your request", statusCode: 500);
             
-            //TODO: returning Ok for any unexpected error, need to format and return message
+            //TODO: returning Ok except an unexpected error, need to format and return message
             return Ok(registrationValidationResult);
         }
     }

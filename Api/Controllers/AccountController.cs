@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.ValidationServices;
 using Service.ValidationServices.Domains;
@@ -8,11 +9,12 @@ namespace Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RegisterController : ControllerBase
+    [AllowAnonymous]
+    public class AccountController : ControllerBase
     {
         private readonly IValidateRegistrationCommand _validateRegistrationCommand;
 
-        public RegisterController(IValidateRegistrationCommand validateRegistrationCommand)
+        public AccountController(IValidateRegistrationCommand validateRegistrationCommand)
         {
             _validateRegistrationCommand = validateRegistrationCommand;
         }
@@ -24,7 +26,8 @@ namespace Api.Controllers
 
             if (registrationValidationResult == ValidateRegistrationResultType.UnknownError)
                 return Problem(title: "An error occurred while processing your request", statusCode: 500);
-
+            
+            //TODO: returning Ok for any unexpected error, need to format and return message
             return Ok(registrationValidationResult);
         }
     }

@@ -12,6 +12,10 @@ CREATE TABLE [dbo].[ActivationCode](
 	[PurchaserId] [int] NULL,
 	[DatePurchased] [datetime] NOT NULL,
 	[IsActive] [bit] NOT NULL,
+	[CreateDateTime] [datetime] NULL,
+	[UpdateDateTime] [datetime] NULL,
+	[CreateById] [int] NULL,
+	[UpdateById] [int] NULL,
  CONSTRAINT [PK_ActivationCode] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

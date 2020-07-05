@@ -29,7 +29,7 @@ namespace Service.ValidationServices
                 if (await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == registrationModel.UserEmail) != null)
                     return ValidateRegistrationResultType.ExistingEmail;
 
-                var userActivationCodes = await _dataContext.ActivationCodes
+                var userActivationCodes = await _dataContext.ActivationCode
                     .Include(x => x.ApplicationUser)
                     .Where(x => x.Code == registrationModel.ActivationCode && x.IsActive)
                     .ToListAsync();

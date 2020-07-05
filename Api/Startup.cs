@@ -40,6 +40,8 @@ namespace Api
             services.AddScoped<IValidateRegistrationCommand, ValidateRegistrationCommand>();
 
             services.AddControllers().AddControllersAsServices();
+            services.AddCors();
+            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -48,6 +50,15 @@ namespace Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //TODO:  Add your domain and conditionally add localhost
+            app.UseCors(builder =>
+            {
+                builder
+                .AllowAnyOrigin() //"https://example.org",
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+            });
 
             app.UseHttpsRedirection();
 

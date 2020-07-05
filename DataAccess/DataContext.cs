@@ -10,6 +10,6 @@ namespace DataAccess
 
         }
 
-        public virtual DbSet<ActivationCode> ActivationCodes { get; set; }
+        public virtual DbSet<ActivationCode> ActivationCode { get; set; }
     }
 }

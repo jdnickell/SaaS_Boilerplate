@@ -1,8 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import ApiRequest from "./components/api/ApiRequest";
 
 function App() {
+  ApiRequest({
+    method: "get",
+    url: "/todos/1",
+  }).then((resp) => {
+    console.log(resp);
+  });
+
   return (
     <div className="App">
       <header className="App-header">

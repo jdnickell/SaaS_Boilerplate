@@ -1,32 +1,25 @@
 import React from "react";
-import logo from "./logo.svg";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import Layout from "./components/layout/Layout";
+import Register from "./components/account/Register";
+import SignUp from "./components/account/SignUp";
+import ConfirmEmail from "./components/account/ConfirmEmail";
+import "react-bulma-components/dist/react-bulma-components.min.css";
 import "./App.css";
-import ApiRequest from "./components/api/ApiRequest";
 
 function App() {
-  ApiRequest({
-    method: "get",
-    url: "/todos/1",
-  }).then((resp) => {
-    console.log(resp);
-  });
-
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <Layout>
+          <Switch>
+            <Route exact path="/" />
+            <Route path="/register" component={Register} />
+            <Route path="/signup" component={SignUp} />
+            <Route path="/ConfirmEmail" component={ConfirmEmail} />
+          </Switch>
+        </Layout>
+      </BrowserRouter>
     </div>
   );
 }

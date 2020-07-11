@@ -52,8 +52,9 @@ namespace Service.ValidationServices
                 var result = await _userManager.CreateAsync(applicationUser, registrationModel.Password);
 
                 if (result.Succeeded)
+                {
                     return ValidateRegistrationResultType.Success;
-
+                }
                 else
                 {
                     //TODO: Log result.Errors

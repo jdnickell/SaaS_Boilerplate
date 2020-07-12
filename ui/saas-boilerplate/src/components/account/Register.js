@@ -16,10 +16,12 @@ const Register = () => {
   password.current = watch("password", "");
 
   function onSubmit(registrationModel) {
-    Account.create(registrationModel).then((response) => {
-      console.log("response" + response);
-      history.push("/ConfirmEmail");
-    });
+    Account.create(registrationModel)
+      .then((response) => {
+        console.log("response" + response);
+        history.push("/ConfirmEmail");
+      })
+      .catch((error) => alert("An error occurred, please try again later."));
   }
 
   return (
@@ -135,9 +137,9 @@ const Register = () => {
                       ref={register({
                         required: "Required",
                         pattern: {
-                          value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+                          value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$%^&*()]).{8,}$/,
                           message:
-                            "Password must contain an upper and lower case letter and be at least 8 characters long",
+                            "Password must contain upper case, lower case, special character and be at least 8 characters long",
                         },
                       })}
                     />

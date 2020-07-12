@@ -1,0 +1,32 @@
+nav {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.footer {
+  padding: 10px;
+  text-align: center;
+}
+.validation-error {
+  color: red;
+}
+
+.m-top-45 {
+  margin-top: 45px;
+}
+
+.p-top-45 {
+  padding-top: 45px;
+}
+
+.img-icon {
+  height: 35px;
+  width: 35px;
+  margin-right: 15px;
+  float: left;
+}
+
+.center-text {
+  text-align: center;
+}

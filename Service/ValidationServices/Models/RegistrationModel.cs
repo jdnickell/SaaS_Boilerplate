@@ -1,4 +1,4 @@
-﻿namespace Service.ValidationServices.Domains
+﻿namespace Service.ValidationServices.Models
 {
     public class RegistrationModel
     {

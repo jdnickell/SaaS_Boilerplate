@@ -1,7 +1,7 @@
 ﻿using DataAccess;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Service.ValidationServices.Domains;
+using Service.ValidationServices.Models;
 using Service.ValidationServices.Enums;
 using System;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace Service.ValidationServices
         private readonly DataContext _dataContext;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        const int MAXIMUM_ACTIVATION_CODE_USES = 1;
+        const int MAXIMUM_ACTIVATION_CODE_USES = 2;
 
         public ValidateRegistrationCommand(DataContext dataContext, UserManager<ApplicationUser> userManager)
         {
@@ -52,8 +52,9 @@ namespace Service.ValidationServices
                 var result = await _userManager.CreateAsync(applicationUser, registrationModel.Password);
 
                 if (result.Succeeded)
+                {
                     return ValidateRegistrationResultType.Success;
-
+                }
                 else
                 {
                     //TODO: Log result.Errors

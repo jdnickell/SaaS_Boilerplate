@@ -7,6 +7,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Service.ValidationServices;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using Service.AuthenticationServices;
+using Domain.Configuration;
 
 namespace Api
 {
@@ -37,7 +43,36 @@ namespace Api
                 .AddEntityFrameworkStores<DataContext>()
                 .AddDefaultTokenProviders();
 
+            var authenticationSection = Configuration.GetSection(nameof(Authentication));
+            Authentication.Secret = authenticationSection["Secret"];
+
+            double.TryParse(authenticationSection["SecurityTokenDescriptorExpirationMinutes"], out var securityTokenDescriptorExpirationMinutes);
+            Authentication.SecurityTokenDescriptorExpirationMinutes = securityTokenDescriptorExpirationMinutes;
+
+
+            var key = Encoding.ASCII.GetBytes(Authentication.Secret);
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
             services.AddScoped<IValidateRegistrationCommand, ValidateRegistrationCommand>();
+            services.AddScoped<IAuthenticateUserCommand, AuthenticateUserCommand>();
 
             services.AddControllers().AddControllersAsServices();
             services.AddCors();

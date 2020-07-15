@@ -1,29 +1,4 @@
 import React from "react";
-import Account from "../../services/api/Account";
-import Authentication from "../../services/api/Authentication";
-import CookieService from "../../services/shared/CookieService";
-
-//Testing Auth
-// let token = "";
-
-// const creds = {
-//   username: "jdnickell@gmail.com",
-//   password: "TestPassword123!",
-// };
-// Authentication.authenticate(creds)
-//   .then((response) => {
-//     token = response.token;
-//     console.log("response token: ");
-//     console.log(token);
-//     CookieService.createCookie("AuthToken", token, 1);
-//   })
-//   .catch((error) => alert("An error occurred, please try again later."));
-
-// Account.get()
-//   .then((response) => {
-//     console.log("response" + response);
-//   })
-//   .catch((error) => alert("An error occurred, please try again later."));
 
 const ConfirmEmail = () => {
   return (

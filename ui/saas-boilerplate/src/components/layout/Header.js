@@ -8,6 +8,8 @@ const Header = () => {
       {" | "}
       <NavLink to="/register">Register</NavLink>
       {" | "}
+      <NavLink to="/signin">Sign In</NavLink>
+      {" | "}
       <NavLink to="/signup">Sign Up</NavLink>
     </div>
   );

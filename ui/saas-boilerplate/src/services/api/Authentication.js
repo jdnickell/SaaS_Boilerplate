@@ -1,7 +1,6 @@
 import ApiService from "../shared/ApiService";
 
 export function authenticate(authenticationModel) {
-  console.log(authenticationModel);
   return ApiService.request({
     url: "/authentication",
     method: "POST",

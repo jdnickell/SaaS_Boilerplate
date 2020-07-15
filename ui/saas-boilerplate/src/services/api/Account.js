@@ -1,16 +1,24 @@
-import request from "../shared/ApiService";
+import ApiService from "../shared/ApiService";
 
-function create(registrationModel) {
+export function register(registrationModel) {
   console.log(registrationModel);
-  return request({
+  return ApiService.request({
     url: "/account",
     method: "POST",
     data: registrationModel,
   });
 }
 
+export function get() {
+  return ApiService.request({
+    url: "/account",
+    method: "GET",
+  });
+}
+
 const AccountService = {
-  create,
+  register,
+  get,
 };
 
 export default AccountService;

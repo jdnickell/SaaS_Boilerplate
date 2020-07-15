@@ -16,7 +16,7 @@ const Register = () => {
   password.current = watch("password", "");
 
   function onSubmit(registrationModel) {
-    Account.create(registrationModel)
+    Account.register(registrationModel)
       .then((response) => {
         console.log("response" + response);
         history.push("/ConfirmEmail");

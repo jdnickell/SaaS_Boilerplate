@@ -17,8 +17,7 @@ const Register = () => {
 
   function onSubmit(registrationModel) {
     Account.register(registrationModel)
-      .then((response) => {
-        console.log("response" + response);
+      .then(() => {
         history.push("/ConfirmEmail");
       })
       .catch((error) => alert("An error occurred, please try again later."));

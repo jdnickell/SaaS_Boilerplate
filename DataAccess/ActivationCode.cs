@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DataAccess
 {
@@ -9,6 +10,6 @@ namespace DataAccess
         public int PurchaserId { get; set; }
         public bool IsActive { get; set; }
 
-        public ApplicationUser ApplicationUser { get; set; }
+       public ICollection<ApplicationUser> ApplicationUsers { get; set; }
     }
 }

@@ -9,5 +9,6 @@ namespace DataAccess
         public int ActivationCodeId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public ActivationCode ActivationCode { get; set; }
     }
 }

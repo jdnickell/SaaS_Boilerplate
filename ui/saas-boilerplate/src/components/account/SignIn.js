@@ -86,6 +86,7 @@ const SignIn = () => {
                       type="password"
                       placeholder="Password"
                       name="password"
+                      autoComplete="password"
                       ref={register({
                         required: "Required",
                       })}

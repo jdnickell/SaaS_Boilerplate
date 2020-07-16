@@ -1,25 +1,46 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Account from "../../services/api/Account";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faKey, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import "../../App.css";
 import "./account.css";
 
 const Register = () => {
   const { register, errors, handleSubmit, watch } = useForm({});
-
+  const [registrationErrorMessage, setRegistrationErrorMessage] = useState(
+    null
+  );
   const history = useHistory();
   const password = useRef({});
   password.current = watch("password", "");
 
   function onSubmit(registrationModel) {
-    Account.create(registrationModel)
+    setRegistrationErrorMessage(null);
+    Account.register(registrationModel)
       .then((response) => {
-        console.log("response" + response);
-        history.push("/ConfirmEmail");
+        //Service.ValidationServices.Enums.ValidateRegistrationResultType
+        switch (response.data) {
+          case 2:
+            setRegistrationErrorMessage(
+              "An account has already been registered with this email."
+            );
+            return;
+          case 3:
+            setRegistrationErrorMessage(
+              "Invalid activation code, please try again."
+            );
+            return;
+          case 4:
+            setRegistrationErrorMessage(
+              "This activation code has already been used."
+            );
+            return;
+          default:
+            history.push("/ConfirmEmail");
+        }
       })
       .catch((error) => alert("An error occurred, please try again later."));
   }
@@ -31,19 +52,30 @@ const Register = () => {
           <div className="container">
             <div className="media is-pulled-right">
               <div className="media-content">
-                <button className="button is-link is-outlined githubSignin">
-                  Sign In
-                </button>
+                <Link to="/signin">
+                  <button className="button is-link is-outlined githubSignin">
+                    Sign In
+                  </button>
+                </Link>
               </div>
             </div>
             <div className="title">Register</div>
-            <div className="notification is-primary m-top-45 column">
-              <div>
-                <p>
-                  Create an account with your activation code to get started.
-                </p>
+            {registrationErrorMessage ? (
+              <div className="notification is-danger m-top-45 column">
+                <div>
+                  <p>{registrationErrorMessage}</p>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="notification is-primary m-top-45 column">
+                <div>
+                  <p>
+                    Create an account with your activation code to get started.
+                  </p>
+                </div>
+              </div>
+            )}
+
             <form id="register-form" onSubmit={handleSubmit(onSubmit)}>
               <div className="">
                 <div className="field">

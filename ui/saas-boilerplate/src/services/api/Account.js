@@ -1,8 +1,7 @@
-import request from "../shared/ApiService";
+import ApiService from "../shared/ApiService";
 
-function create(registrationModel) {
-  console.log(registrationModel);
-  return request({
+export function register(registrationModel) {
+  return ApiService.request({
     url: "/account",
     method: "POST",
     data: registrationModel,
@@ -10,7 +9,7 @@ function create(registrationModel) {
 }
 
 const AccountService = {
-  create,
+  register,
 };
 
 export default AccountService;

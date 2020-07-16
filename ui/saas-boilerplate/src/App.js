@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Register from "./components/account/Register";
+import SignIn from "./components/account/SignIn";
 import SignUp from "./components/account/SignUp";
 import ConfirmEmail from "./components/account/ConfirmEmail";
 import "react-bulma-components/dist/react-bulma-components.min.css";
@@ -15,6 +16,7 @@ function App() {
           <Switch>
             <Route exact path="/" />
             <Route path="/register" component={Register} />
+            <Route path="/signin" component={SignIn} />
             <Route path="/signup" component={SignUp} />
             <Route path="/ConfirmEmail" component={ConfirmEmail} />
           </Switch>

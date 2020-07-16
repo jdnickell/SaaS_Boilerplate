@@ -24,7 +24,7 @@ namespace Api.Controllers
             var response = await _authenticateUserCommand.ExecuteAsync(authenticationRequest);
 
             if (response == null)
-                return BadRequest(new { message = "Incorrect username or password." });
+                return Unauthorized(new { message = "Incorrect username or password." });
 
             return Ok(response);
         }

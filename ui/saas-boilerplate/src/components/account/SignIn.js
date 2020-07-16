@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Authentication from "../../services/api/Authentication";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faKey } from "@fortawesome/free-solid-svg-icons";
@@ -10,7 +10,12 @@ import "./account.css";
 
 const SignIn = () => {
   const { register, errors, handleSubmit } = useForm({});
+  const [isAuthenticationError, setIsAuthenticationError] = useState(false);
   const history = useHistory();
+
+  function clearValidation() {
+    setIsAuthenticationError(false);
+  }
 
   function onSubmit(signInModel) {
     Authentication.authenticate(signInModel)
@@ -18,7 +23,10 @@ const SignIn = () => {
         history.push("/ConfirmEmail");
       })
       .catch((error) => {
-        console.log(error);
+        if (error.status === 401) {
+          setIsAuthenticationError(true);
+          return;
+        }
         return alert("An error occurred, please try again later.");
       });
   }
@@ -30,6 +38,18 @@ const SignIn = () => {
           <div className="container">
             <div className="title">Sign In</div>
             <form id="register-form" onSubmit={handleSubmit(onSubmit)}>
+              {isAuthenticationError ? (
+                <div className="notification is-danger">
+                  <button
+                    type="button"
+                    className="delete"
+                    onClick={clearValidation}
+                  ></button>
+                  Invalid username or password.
+                </div>
+              ) : (
+                ""
+              )}
               <div className="">
                 <div className="field">
                   <label className="label" htmlFor="username">
@@ -68,11 +88,6 @@ const SignIn = () => {
                       name="password"
                       ref={register({
                         required: "Required",
-                        pattern: {
-                          value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$%^&*()]).{8,}$/,
-                          message:
-                            "Password must contain upper case, lower case, special character and be at least 8 characters long",
-                        },
                       })}
                     />
                     <span className="validation-error">

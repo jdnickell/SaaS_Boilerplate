@@ -10,15 +10,12 @@ const client = axios.create({
 
 function request(options) {
   const onSuccess = function (response) {
-    return response.data;
+    return response;
   };
 
   const onError = function (error) {
     if (error.response) {
       // Request was made but server responded with something other than 2xx
-      console.log("Status:", error.response.status);
-      console.log("Data:", error.response.data);
-      console.log("Headers:", error.response.headers);
     } else {
       // Error occurred while setting up the request
       console.log("Error Message:", error.message);

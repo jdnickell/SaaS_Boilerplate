@@ -10,7 +10,6 @@ export function register(registrationModel) {
 
 const AccountService = {
   register,
-  get,
 };
 
 export default AccountService;

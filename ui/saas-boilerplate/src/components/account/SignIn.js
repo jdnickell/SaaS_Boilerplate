@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Authentication from "../../services/api/Authentication";
+import SignInService from "../../services/shared/SignInService";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faKey } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,18 +17,17 @@ const SignIn = () => {
     setIsAuthenticationError(false);
   }
 
-  function onSubmit(signInModel) {
-    Authentication.authenticate(signInModel)
-      .then(() => {
-        history.push("/ConfirmEmail");
-      })
-      .catch((error) => {
-        if (error.status === 401) {
-          setIsAuthenticationError(true);
-          return;
-        }
-        return alert("An error occurred, please try again later.");
-      });
+  async function onSubmit(signInModel) {
+    let signInResponse = await SignInService.getSignInResponse(signInModel);
+    if (signInResponse === 200) {
+      history.push("/ConfirmEmail");
+      return;
+    }
+    if (signInResponse === 401) {
+      setIsAuthenticationError(true);
+      return;
+    }
+    return alert("An unexpected error occurred, please try again later.");
   }
 
   return (

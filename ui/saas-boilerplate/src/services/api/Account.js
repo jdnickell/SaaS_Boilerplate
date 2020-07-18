@@ -1,6 +1,6 @@
 import ApiService from "../shared/ApiService";
 
-export function register(registrationModel) {
+export async function register(registrationModel) {
   return ApiService.request({
     url: "/account",
     method: "POST",

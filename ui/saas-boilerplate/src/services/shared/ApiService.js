@@ -8,7 +8,7 @@ const client = axios.create({
   baseURL: process.env.REACT_APP_BASE_API_URL,
 });
 
-function request(options) {
+async function request(options) {
   const onSuccess = function (response) {
     return response;
   };
@@ -18,13 +18,17 @@ function request(options) {
       // Request was made but server responded with something other than 2xx
     } else {
       // Error occurred while setting up the request
-      console.log("Error Message:", error.message);
     }
 
     return Promise.reject(error.response || error.message);
   };
 
-  return client(options).then(onSuccess).catch(onError);
+  try {
+    const response = await client(options);
+    return onSuccess(response);
+  } catch (error) {
+    return onError(error);
+  }
 }
 
 const ApiService = {

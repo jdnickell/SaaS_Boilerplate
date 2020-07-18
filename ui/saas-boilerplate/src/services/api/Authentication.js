@@ -1,7 +1,7 @@
 import ApiService from "../shared/ApiService";
 
-export function authenticate(authenticationModel) {
-  return ApiService.request({
+export async function authenticate(authenticationModel) {
+  return await ApiService.request({
     url: "/authentication",
     method: "POST",
     data: authenticationModel,

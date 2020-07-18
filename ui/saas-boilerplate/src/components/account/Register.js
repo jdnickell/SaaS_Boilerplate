@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import Account from "../../services/api/Account";
+import RegisterService from "../../services/shared/RegisterService";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faKey, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,32 +17,35 @@ const Register = () => {
   const password = useRef({});
   password.current = watch("password", "");
 
-  function onSubmit(registrationModel) {
+  async function onSubmit(registrationModel) {
     setRegistrationErrorMessage(null);
-    Account.register(registrationModel)
-      .then((response) => {
-        //Service.ValidationServices.Enums.ValidateRegistrationResultType
-        switch (response.data) {
-          case 2:
-            setRegistrationErrorMessage(
-              "An account has already been registered with this email."
-            );
-            return;
-          case 3:
-            setRegistrationErrorMessage(
-              "Invalid activation code, please try again."
-            );
-            return;
-          case 4:
-            setRegistrationErrorMessage(
-              "This activation code has already been used."
-            );
-            return;
-          default:
-            history.push("/ConfirmEmail");
-        }
-      })
-      .catch((error) => alert("An error occurred, please try again later."));
+
+    let registerResponse = await RegisterService.getRegisterResponse(
+      registrationModel
+    );
+    if (registerResponse.status !== 200) {
+      alert("An unexpected error occurred, please try again later.");
+      return;
+    }
+    switch (registerResponse.data) {
+      case 2:
+        setRegistrationErrorMessage(
+          "An account has already been registered with this email."
+        );
+        return;
+      case 3:
+        setRegistrationErrorMessage(
+          "Invalid activation code, please try again."
+        );
+        return;
+      case 4:
+        setRegistrationErrorMessage(
+          "This activation code has already been used."
+        );
+        return;
+      default:
+        history.push("/ConfirmEmail");
+    }
   }
 
   return (

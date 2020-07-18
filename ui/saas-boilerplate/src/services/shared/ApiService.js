@@ -1,8 +1,11 @@
 import axios from "axios";
-import CookieService from "./CookieService";
+import AuthenticationTokenService from "./AuthenticationTokenService";
 
-let token = CookieService.getCookie("AuthToken").toString();
-axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+const authCookie = AuthenticationTokenService.getAuthenticationCookie();
+if (authCookie) {
+  let token = JSON.parse(authCookie).Token;
+  axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+}
 
 const client = axios.create({
   baseURL: process.env.REACT_APP_BASE_API_URL,

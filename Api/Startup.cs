@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using Service.AuthenticationServices;
 using Domain.Configuration;
+using Microsoft.AspNetCore.Http;
 
 namespace Api
 {
@@ -70,6 +71,8 @@ namespace Api
                     ClockSkew = TimeSpan.Zero
                 };
             });
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddScoped<IValidateRegistrationCommand, ValidateRegistrationCommand>();
             services.AddScoped<IAuthenticateUserCommand, AuthenticateUserCommand>();

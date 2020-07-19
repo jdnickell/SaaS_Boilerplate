@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import PromptAndResponse from "../../services/api/PromptAndResponse";
 
 const ConfirmEmail = () => {
+  async function getResult() {
+    let result = await PromptAndResponse.get();
+    console.log(result);
+  }
+
+  useEffect(() => {
+    getResult();
+  }, []);
+
   return (
     <div>
       <div className="section">

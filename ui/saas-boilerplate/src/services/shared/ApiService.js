@@ -1,12 +1,19 @@
 import axios from "axios";
-import CookieService from "./CookieService";
+import AuthenticationTokenService from "./AuthenticationTokenService";
 
-let token = CookieService.getCookie("AuthToken").toString();
-axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+function createClient() {
+  const authCookie = AuthenticationTokenService.getAuthenticationCookie();
+  if (authCookie) {
+    let token = JSON.parse(authCookie).Token;
+    axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+  }
 
-const client = axios.create({
-  baseURL: process.env.REACT_APP_BASE_API_URL,
-});
+  const client = axios.create({
+    baseURL: process.env.REACT_APP_BASE_API_URL,
+  });
+
+  return client;
+}
 
 async function request(options) {
   const onSuccess = function (response) {
@@ -24,6 +31,7 @@ async function request(options) {
   };
 
   try {
+    const client = createClient();
     const response = await client(options);
     return onSuccess(response);
   } catch (error) {
@@ -33,6 +41,7 @@ async function request(options) {
 
 const ApiService = {
   request,
+  createClient,
 };
 
 export default ApiService;

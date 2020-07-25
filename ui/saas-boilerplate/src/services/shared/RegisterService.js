@@ -10,9 +10,7 @@ async function getRegisterResponse(registerModel) {
       password: registerModel.password,
     });
 
-    await AuthenticationTokenService.createAuthenticationCookie(
-      authenticateResponse
-    );
+    AuthenticationTokenService.createAuthenticationCookie(authenticateResponse);
 
     return registerResponse;
   } catch (error) {
